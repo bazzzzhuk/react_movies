@@ -1,0 +1,16 @@
+﻿.header
+{
+	background-color: rgb(0,91,151);
+	color: #FFF;
+	display: flex;
+	justify-content:space-between;
+	align-items:center;
+	padding:16px;
+	border:6px outset rgb(0, 35, 59);
+	border-radius:15px;
+}
+.logo
+{
+	font-size:32px;
+	font-weight:500;
+}
