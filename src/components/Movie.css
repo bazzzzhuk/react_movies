@@ -1,3 +1,11 @@
-﻿body
+﻿.card
 {
+	margin:24px;
+	padding:24px;
+	box-shadow: 0 0 24px 0px black;
+}
+.card img
+{
+	max-width:300px;
+	max-height:400px;
 }
