@@ -42,8 +42,15 @@
 	margin-top: 20px;
 }
 
-	.pagination button {
+	.btn
+	{
 		width: 60px;
+		border: 3px outset #005b97;
+		color: #005b97;
+	}
+	.btn2
+	{
+		width: 30px;
 		border: 3px outset #005b97;
 		color: #005b97;
 	}
@@ -56,6 +63,7 @@
 }*/
 .btn-current-page
 {
+		width: 30px;
 	background-color:dodgerblue;
 
 }
