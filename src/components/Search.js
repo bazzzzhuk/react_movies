@@ -1,44 +1,66 @@
 ﻿import './Search.css';// JavaScript source code
 import React from "react";
 
-class Search extends React.Component
-{
+class Search extends React.Component {
 	state =
 		{
-			search:""
+			search: "",
+			type: "all",
+			page: 1
 		}
-	handleKey = (event) =>
-	{
+	handleKey = (event) => {
 		if (event.key === 'Enter') {
 			this.props.searchMovie(this.state.search, this.state.type);
 		}
 	}
-	handleFilter = (event) =>
-	{
+	handleFilter = (event) => {
 		this.setState
-		(
-			() => ({ type:		event.target.dataset.type }),
-			() => ({ search:	this.props.searchMovie(this.state.search, this.state.type)})
-		)
+			(
+				() => ({ type: event.target.dataset.type }),
+				() => ({ search: this.props.searchMovie(this.state.search, this.state.type) })
+			)
 	}
-	render()
-	{
+
+	prevPage = () => {
+		this.setState
+			(
+				() => (this.state.page > 1 ? { page: this.state.page - 1 } : { page: 1 }),
+				() => { this.props.searchMovie(this.state.search, this.state.type, this.state.page) }
+			)
+	}
+	nextPage = () => {
+		this.setState
+			(
+				() => ({ page: this.state.page + 1 }),
+				() => { this.props.searchMovie(this.state.search, this.state.type, this.state.page) }
+			)
+	}
+
+	render() {
+		let itemsPerPage = 10;
+		let totalPages = Math.ceil(this.props.totalCount / itemsPerPage);
+		//const lastIndex = totalPages <= 10 ? totalPages + 1 : ;
+		let number = [];
+
+		for (let i = 0; i < totalPages; i++)
+			number.push(i+1);
+
 		return (
 			<>
-			<div className="search">
-				<input type="search"
-					placeholder="Поиск"
-					value={this.state.search}
-					onChange={(e) => this.setState({ search: e.target.value })}
-					onKeyUp={this.handleKey }
-				/>
-				<button className="btn"
-					onClick=
-					{
-						() => this.props.searchMovie(this.state.search, this.state.type)
-					}
-				>&#128269;
-				</button>
+				<div className="search">
+					<input type="search"
+						placeholder="Поиск"
+						value={this.state.search}
+						onChange={(e) => this.setState({ search: e.target.value })}
+						onKeyUp={this.handleKey}
+					/>
+					<button className="btn"
+						onClick=
+						{
+							() => this.props.searchMovie(this.state.search, this.state.type)
+						}
+					>&#128269;
+					</button>
 				</div>
 				<div className="radio">
 					<input type="radio"
@@ -72,6 +94,26 @@ class Search extends React.Component
 						checked={this.state.type === 'game'}
 						onChange={this.handleFilter} />
 					<label htmlFor="radio-all">Game</label>
+				</div>
+				<div className="pagination">
+					<button className="btn" onClick={this.prevPage}>◄ prev</button>
+					{/*<>█▓▒░</>*/}
+					{/*<div className="items">*/}
+					{/*	{*/}
+							{number.slice(0, totalPages)
+								.map
+								(
+									(element, index) =>
+									(
+										<button className={element === this.state.page ? "btn-current-page":""}>
+											{element}
+										</button>
+									)
+								)}
+					{/*	}*/}
+					{/*</div>*/}
+					{/*<>░▒▓█</>*/}
+					<button className="btn" onClick={this.nextPage}>next ►</button>
 				</div>
 			</>
 		)

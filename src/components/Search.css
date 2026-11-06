@@ -1,7 +1,7 @@
 ﻿.search {
 	margin: 24px;
-	display:flex;
-	justify-content:center;
+	display: flex;
+	justify-content: center;
 	align-items: flex-start;
 }
 
@@ -24,11 +24,38 @@
 		.search input:hover {
 			font-size: 26px;
 		}
+
 	.search > button {
 		/*background-color: rgb(0 91 151);*/
 		/*color:white;*/
-		width:32px;
-		height:32px;
-		border:none;
-		border-radius:15px;
+		width: 32px;
+		height: 32px;
+		border: none;
+		border-radius: 15px;
 	}
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	margin-top: 20px;
+}
+
+	.pagination button {
+		width: 60px;
+		border: 3px outset #005b97;
+		color: #005b97;
+	}
+
+/*.items {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 12px;
+}*/
+.btn-current-page
+{
+	background-color:dodgerblue;
+
+}
