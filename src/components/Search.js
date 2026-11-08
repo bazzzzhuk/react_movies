@@ -38,22 +38,61 @@ class Search extends React.Component {
 	nextPage = () => {
 		const itemsPerPage = 10;
 		const totalPages = Math.ceil(this.props.totalCount / itemsPerPage);
-			this.setState
+		this.setState
 			(
 				() => (this.state.page < totalPages ? { page: this.state.page + 1 } : { page: totalPages }),
 				() => { this.props.searchMovie(this.state.search, this.state.type, this.state.page) }
 			)
 	}
-	setPage = (pageNumber) =>
-	{
+	setPage = (pageNumber) => {
 		this.setState
-		(
-			() => ({ page: pageNumber }),
-			() => (this.props.searchMovie(this.state.search, this.state.type, this.state.page))
-		)
+			(
+				() => ({ page: pageNumber }),
+				() => (this.props.searchMovie(this.state.search, this.state.type, this.state.page))
+			)
 	}
 
+
+
+	getPaginationNumbers = () => {
+		const itemsPerPage = 10;
+		const totalPages = Math.ceil(this.props.totalCount / itemsPerPage);
+		const currentPage = this.state.page;
+
+		// Если страниц мало
+		if (totalPages <= 5) {
+			return Array.from({ length: totalPages }, (_, i) => i + 1);
+		}
+		const pages = new Set();
+		pages.add(1);
+		if (currentPage !== 1 || currentPage !== null)
+		{
+			for (let i = -1; i <= 1; i++) {
+			const p = currentPage + i;
+			if (p >= 1 && p <= totalPages) {
+				pages.add(p);
+			}
+		}}
+		if(totalPages!==1)pages.add(totalPages);
+
+		const sorted = Array.from(pages).sort((a, b) => a - b);
+		const result = [];
+		sorted.forEach((pageNum, index) => {
+			result.push(pageNum);
+
+			// Если не последний элемент и следующий номер не идёт подряд
+			if (index < sorted.length - 1 && sorted[index + 1] - pageNum > 1) {
+				result.push('░░');
+			}
+		});
+
+		return result;
+	};
+
+	
+
 	render() {
+		const paginationNumbers = this.getPaginationNumbers();
 		let itemsPerPage = 10;
 		let totalPages = Math.ceil(this.props.totalCount / itemsPerPage);
 		//this.setState({ totalPages: Math.ceil(this.props.totalCount / itemsPerPage) });
@@ -61,7 +100,15 @@ class Search extends React.Component {
 		let number = [];
 
 		for (let i = 0; i < totalPages; i++)
-			number.push(i+1);
+			number.push(i + 1);
+
+		const pagesToShow = [
+			1,                
+			this.state.page-1,         
+			this.state.page,       
+			this.state.page+1,          
+			totalPages
+		].filter((p) => p != null); // если страниц нет
 
 		return (
 			<>
@@ -120,19 +167,50 @@ class Search extends React.Component {
 					<button className="btn" onClick={this.prevPage}>◄ prev</button>
 					{/*<>█▓▒░</>*/}
 					{/*<div className="items">*/}
-					{/*	{*/}
-							{number.slice(0, totalPages)
-								.map
-								(
-									(element, index) =>
-									(
-										<button className={element === this.state.page ? "btn-current-page" : "btn2"}
-											onClick={()=>(this.setPage(element))}
-										>
-											{element}
-										</button>
-									)
-								)}
+					{/*{*/}
+
+					{/*{number.map*/}
+					{/*	(*/}
+					{/*		(element, index) =>*/}
+					{/*		(*/}
+					{/*			<button className={element === this.state.page ? "btn-current-page" : "btn2"}*/}
+					{/*				onClick={()=>(this.setPage(element))}*/}
+					{/*			>*/}
+					{/*				{element}*/}
+					{/*			</button>*/}
+					{/*		)*/}
+					{/*	)}*/}
+
+
+
+					{paginationNumbers.map((item) => {
+						if (typeof item === 'string') {
+							return <span key={'dot-' + item} className="pagination-dots">{item}</span>;
+						}
+						return (
+							<button
+								key={item}
+								className={item === this.state.page ? 'btn-current-page' : 'btn2'}
+								onClick={() => this.setPage(item)}
+							>
+								{item}
+							</button>
+						);
+					})}
+
+
+					{/*{*/}
+					{/*	pagesToShow.map((pageNum) => (*/}
+					{/*		<button*/}
+					{/*			key={pageNum}*/}
+					{/*			className={pageNum === this.state.page ? "btn-current-page" : "btn2"}*/}
+					{/*			onClick={() => this.setPage(pageNum)}*/}
+					{/*		>*/}
+					{/*			{pageNum}*/}
+					{/*		</button>*/}
+					{/*	))*/}
+					{/*}*/}
+
 					{/*	}*/}
 					{/*</div>*/}
 					{/*<>░▒▓█</>*/}
