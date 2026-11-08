@@ -36,9 +36,11 @@ class Search extends React.Component {
 			)
 	}
 	nextPage = () => {
-		this.setState
+		const itemsPerPage = 10;
+		const totalPages = Math.ceil(this.props.totalCount / itemsPerPage);
+			this.setState
 			(
-				() => ({ page: this.state.page + 1 }),
+				() => (this.state.page < totalPages ? { page: this.state.page + 1 } : { page: totalPages }),
 				() => { this.props.searchMovie(this.state.search, this.state.type, this.state.page) }
 			)
 	}
