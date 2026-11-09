@@ -45,6 +45,7 @@ class Search extends React.Component {
 			)
 	}
 	setPage = (pageNumber) => {
+		if (typeof pageNumber !== 'number') return; 
 		this.setState
 			(
 				() => ({ page: pageNumber }),
@@ -82,7 +83,7 @@ class Search extends React.Component {
 
 			// Если не последний элемент и следующий номер не идёт подряд
 			if (index < sorted.length - 1 && sorted[index + 1] - pageNum > 1) {
-				result.push('░░');
+				result.push('.');
 			}
 		});
 
@@ -184,8 +185,8 @@ class Search extends React.Component {
 
 
 					{paginationNumbers.map((item) => {
-						if (typeof item === 'string') {
-							return <span key={'dot-' + item} className="pagination-dots">{item}</span>;
+						if (item === '.') {
+							return <span key={'dot-' + item} className="pagination-dots">...</span>;
 						}
 						return (
 							<button
